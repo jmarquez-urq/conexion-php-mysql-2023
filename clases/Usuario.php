@@ -3,11 +3,11 @@
 class Usuario
 {
     protected $id;
-    protected $nombre_usuario;
-    protected $nombre;
-    protected $apellido;
+    public $nombre_usuario;
+    public $nombre;
+    public $apellido;
 
-    public function __construct($id, $nombre_usuario, $nombre, $apellido)
+    public function __construct($nombre_usuario, $nombre, $apellido, $id=null)
     {
         $this->id = $id;
         $this->nombre_usuario = $nombre_usuario;
@@ -18,6 +18,10 @@ class Usuario
     public function getNombreApellido()
     {
         return "$this->nombre $this->apellido";
+    }
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }
 

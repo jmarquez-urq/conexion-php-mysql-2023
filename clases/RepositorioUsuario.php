@@ -54,8 +54,7 @@ class RepositorioUsuario
             if ($query->fetch()) {
                 // Validar que la clave esté bien:
                 if (password_verify($clave, $clave_encriptada)) {
-                    return new Usuario($id, $nombre_usuario, $nombre, $apellido);
-
+                    return new Usuario($nombre_usuario, $nombre, $apellido, $id);
                 }
             }
 
@@ -63,4 +62,34 @@ class RepositorioUsuario
         return false;
     }
 
+    /**
+     * Crea un nuevo usuario en la BD. Retorna el id asignado por la base de
+     * datos, o el valor booleano false si hubo algún error.
+     *
+     * @param Usuario $usuario El objeto de la clase Usuario a guardar.
+     * @param string  $clave   La contraseña elegida por el nuevo usuario.
+     *
+     * @return mixed El valor booleano false si hubo error, o el id de usuario
+     *               asignado automáticamente por la BD (valor entero).
+     */
+    public function save(Usuario $usuario, $clave)
+    {
+        $q = "INSERT INTO usuarios (nombre_usuario, clave, nombre, apellido) ";
+        $q.= "VALUES (?, ? , ? , ?)";
+        $query = self::$conexion->prepare($q);
+
+        $nombre_usuario = $usuario->nombre_usuario;
+        $clave = password_hash($clave, PASSWORD_DEFAULT);
+        $nombre = $usuario->nombre;
+        $apellido = $usuario->apellido;
+
+        $query->bind_param("ssss", $nombre_usuario, $clave, $nombre, $apellido);
+
+        if ($query->execute())  {
+            return self::$conexion->insert_id;
+        } else {
+            return false;
+        }
+    }
 }
+
