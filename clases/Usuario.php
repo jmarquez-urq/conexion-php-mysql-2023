@@ -27,5 +27,11 @@ class Usuario
     {
         return $this->id;
     }
+    public function setDatos($nombre_usuario, $nombre, $apellido)
+    {
+        $this->nombre_usuario = $nombre_usuario;
+        $this->nombre = $nombre;
+        $this->apellido = $apellido;
+    }
 }
 

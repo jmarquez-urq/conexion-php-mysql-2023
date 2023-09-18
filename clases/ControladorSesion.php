@@ -85,5 +85,34 @@ class ControladorSesion
         //     return false;
         // }
     }
+
+    /**
+     * Solicita que se actualicen en la BD los datos del usuario, y si tiene
+     * éxito, actualiza también los datos del usuario almacenados en la sesión.
+     *
+     * @param string $nombre_usuario El nuevo nombre de usuario
+     * @param string $nombre         El nuevo nombre de la persona
+     * @param string $apellido       El nuevo apellido de la persona
+     * @param Usuario $usuario       El objeto usuario almacenado en la sesión.
+     *
+     * @return boolean true si tuvo éxito, false de lo contrario.
+     */
+    function modificar(string $nombre_usuario, string $nombre, string $apellido, Usuario $usuario)
+    {
+        $repo = new RepositorioUsuario();
+
+        if ($repo->actualizar($nombre_usuario, $nombre, $apellido, $usuario)) {
+            // Si los datos se actualizaron correctamente en la BD, actualizo
+            // el usuario que tengo en memoria...
+            $usuario->setDatos($nombre_usuario, $nombre, $apellido);
+            //... y lo guardo como variable de sesión.
+            $_SESSION['usuario'] = serialize($usuario);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 

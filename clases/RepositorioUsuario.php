@@ -117,5 +117,33 @@ class RepositorioUsuario
         //     return false;
         // }
     }
-}
 
+    /**
+     * Actualiza en la BD los datos del usuario, y si tiene éxito, retorna true.
+     *
+     * @param string $nombre_usuario El nuevo nombre de usuario
+     * @param string $nombre         El nuevo nombre de la persona
+     * @param string $apellido       El nuevo apellido de la persona
+     * @param Usuario $usuario       El objeto usuario almacenado en la sesión.
+     *
+     * @return boolean true si tuvo éxito, false de lo contrario.
+     */
+    public function actualizar(
+        string $nombre_usuario,
+        string $nombre,
+        string $apellido,
+        Usuario $usuario
+    ) {
+        $q = "UPDATE usuarios SET nombre_usuario = ?, nombre = ?, apellido = ? ";
+        $q.= " WHERE id = ?;";
+
+        $query = self::$conexion->prepare($q);
+
+        $id = $usuario->getId();
+
+        $query->bind_param("sssd", $nombre_usuario, $nombre, $apellido, $id);
+
+        return $query->execute();
+    }
+
+}
