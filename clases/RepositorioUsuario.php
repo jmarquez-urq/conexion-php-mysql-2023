@@ -91,5 +91,31 @@ class RepositorioUsuario
             return false;
         }
     }
+
+    /**
+     * Elimina el usuario de la BD. Retorna true si tuvo éxito, false si no.
+     *
+     * @params Usuario $usuario El objeto usuario a eliminar de la BD.
+     *
+     * @return boolean true si tuvo éxito, false de lo contrario
+     */
+    public function eliminar(Usuario $usuario)
+    {
+        $q = "DELETE FROM usuarios WHERE id = ?";
+        $query = self::$conexion->prepare($q);
+
+        $id = $usuario->getId();
+
+        $query->bind_param("d", $id);
+
+        return $query->execute();
+
+        // O bien:
+        // if ($query->execute()) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    }
 }
 

@@ -65,5 +65,25 @@ class ControladorSesion
             return [ true, "Usuario creado correctamente" ];
         }
     }
+
+    /**
+     * Elimina el usuario. Retorna true si tuvo éxito, false si no.
+     *
+     * @params Usuario $usuario El objeto usuario a eliminar.
+     *
+     * @return boolean true si tuvo éxito, false de lo contrario
+     */
+    function eliminar(Usuario $usuario)
+    {
+        $repo = new RepositorioUsuario();
+        return $repo->eliminar($usuario);
+
+        // O bien:
+        // if ($repo->eliminar($usuario)) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    }
 }
 
